@@ -1,0 +1,6 @@
+[submodule "system/libopencm3"]
+	path = system/libopencm3
+	url = https://github.com/libopencm3/libopencm3.git
+[submodule "system/FreeRTOS"]
+	path = system/FreeRTOS
+	url = https://github.com/FreeRTOS/FreeRTOS.git
