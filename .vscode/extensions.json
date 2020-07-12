@@ -11,10 +11,11 @@
 		"cschlosser.doxdocgen",
 		"eamodio.gitlens",
 		"amapleaf.linker-script",
-		"marus25.cortex-debug"
+		"marus25.cortex-debug",
+		"ms-vscode-remote.remote-containers"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
-		
+
 	]
 }
