@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 
 set(CMAKE_TOOLCHAIN_FILE cmake/arm_none_eabi_gcc_toolchain.cmake)
+set(CMAKE_C_COMPILER_WORKS 1)
+set(CMAKE_CXX_COMPILER_WORKS 1)
 
 project(CMakeSTM32_Test)
 set(ELF ${PROJECT_NAME}.elf)
@@ -14,8 +16,13 @@ COMMAND ${CMAKE_OBJCOPY} ARGS -O binary ${ELF} ${PROJECT_NAME}.bin)
 # Configure libopencm3
 set(LIBOPENCM3_DIR ${CMAKE_SOURCE_DIR}/system/libopencm3)
 include_directories(${LIBOPENCM3_DIR}/include)
-add_custom_target(libopencm3 COMMAND make -j8 WORKING_DIRECTORY ${LIBOPENCM3_DIR})
 find_library(libopencm3_stm32f4 libopencm3_stm32f4.a PATHS ${LIBOPENCM3_DIR}/lib)
+
+if (NOT libopencm3_stm32f4)
+    message("Libopencm3 not built, building")
+    execute_process(COMMAND make -j8 WORKING_DIRECTORY ${LIBOPENCM3_DIR})
+    find_library(libopencm3_stm32f4 libopencm3_stm32f4.a PATHS ${LIBOPENCM3_DIR}/lib)
+endif ()
 target_link_libraries(${ELF} ${libopencm3_stm32f4})
 
 # Configure Freertos
@@ -27,7 +34,7 @@ include_directories(
     ${FREERTOS_DIR}/include
     ${FREERTOS_PORT_DIR})
 set(FREERTOS_LIB_SRC
-    ${FREERTOS_PORT_DIR}//port.c
+    ${FREERTOS_PORT_DIR}/port.c
     ${FREERTOS_DIR}/portable/MemMang/heap_1.c
     ${FREERTOS_DIR}/portable/MemMang/heap_2.c
     ${FREERTOS_DIR}/portable/MemMang/heap_3.c
