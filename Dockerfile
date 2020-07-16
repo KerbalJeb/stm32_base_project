@@ -19,3 +19,4 @@ RUN rm gcc-arm-none-eabi.tar.bz2
 
 # add the tools to the path
 ENV PATH="/gcc-arm-none-eabi/bin:${PATH}"
+EXPOSE 4444
