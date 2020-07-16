@@ -4,9 +4,10 @@ set(CMAKE_TOOLCHAIN_FILE cmake/arm_none_eabi_gcc_toolchain.cmake)
 set(CMAKE_C_COMPILER_WORKS 1)
 set(CMAKE_CXX_COMPILER_WORKS 1)
 
-project(CMakeSTM32_Test)
+project(executable)
 set(ELF ${PROJECT_NAME}.elf)
-add_executable(${ELF} src/main.c)
+add_executable(${ELF} src/main.c src/FreeRTOS-openocd.c)
+
 target_compile_definitions(${ELF} PUBLIC -DSTM32F4)
 
 add_custom_command(TARGET ${ELF}
@@ -33,13 +34,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${FREERTOS_DIR}/include
     ${FREERTOS_PORT_DIR})
-set(FREERTOS_LIB_SRC
+
+target_sources(${ELF} PRIVATE
     ${FREERTOS_PORT_DIR}/port.c
-    ${FREERTOS_DIR}/portable/MemMang/heap_1.c
-    ${FREERTOS_DIR}/portable/MemMang/heap_2.c
     ${FREERTOS_DIR}/portable/MemMang/heap_3.c
-    ${FREERTOS_DIR}/portable/MemMang/heap_4.c
-    ${FREERTOS_DIR}/portable/MemMang/heap_5.c
     ${FREERTOS_DIR}/croutine.c
     ${FREERTOS_DIR}/event_groups.c
     ${FREERTOS_DIR}/list.c
@@ -47,5 +45,3 @@ set(FREERTOS_LIB_SRC
     ${FREERTOS_DIR}/stream_buffer.c
     ${FREERTOS_DIR}/tasks.c
     ${FREERTOS_DIR}/timers.c)
-add_library(freertos STATIC ${FREERTOS_LIB_SRC})
-target_link_libraries(${ELF} ${freertos})
