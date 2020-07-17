@@ -25,5 +25,6 @@
 		"amapleaf.linker-script",
 		"marus25.cortex-debug",
 		"ms-vscode-remote.remote-containers"
-	]
+	],
+	"initializeCommand": "start /b openocd -f board/stm32f4discovery.cfg"
 }
